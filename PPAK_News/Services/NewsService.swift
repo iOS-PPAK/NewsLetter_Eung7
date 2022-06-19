@@ -14,7 +14,7 @@ class NewsService {
         let parameters: [String: Any] = [
             "q": query,
             "apiKey": "6f5c1f24201d4a6681ef1da3e41810e9",
-            "pageSize": 20,
+            "pageSize": 10,
             "page": page
         ]
         
@@ -23,7 +23,9 @@ class NewsService {
             .responseDecodable(of: NewsResponseModel.self) { response in
                 switch response.result {
                 case .success(let responseModel):
-                    completion(responseModel.articles, page + 1)
+                    DispatchQueue.main.async {
+                        completion(responseModel.articles, page + 1)
+                    }
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
